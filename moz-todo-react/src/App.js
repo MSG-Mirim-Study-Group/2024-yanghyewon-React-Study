@@ -14,13 +14,27 @@ function App(props) {
     setTasks([...tasks, newTask]);
   }
   
-  //나보고뭐어ㅓㄸ하ㅓㅏㅣㄻ어ㅐㄻ너오ㅓㅊㅇ노ㅓㅏㅣㄴㅇ ㅗㅕㄴㄹㅇ모ㅓㅏㄴ임ㅁ뉴ㅓㅏㅇ치
   
   const name = "양혜원";
 
   function toggleTaskCompleted(id) {
-    console.log(tasks[0]);
+    const updatedTasks = tasks.map((task) => {
+      // if this task has the same ID as the edited task
+      if (id === task.id) {
+        // use object spread to make a new object
+        // whose `completed` props has been inverted
+        return { ...task, completed: !task.completed };
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
   }
+  
+  function deleteTask(id) {
+    const remainingTasks = tasks.filter((task) => id !== task.id);
+    setTasks(remainingTasks);
+  }  
+  
   
   const taskList = tasks.map((task) => (
     <Todo
@@ -29,8 +43,10 @@ function App(props) {
       completed={task.completed}
       key={task.id}
       toggleTaskCompleted={toggleTaskCompleted}
+      deleteTask={deleteTask}
     />
   ));
+  
 
   const doneList = (props.tasks || []).map((task) => (
     <FilterButton
